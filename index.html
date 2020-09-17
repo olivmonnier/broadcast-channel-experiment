@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div>
+    <button id="pushMaster">Master Push</button>
+  </div>
+  <iframe src="./src/_iframe.html"></iframe>
+  <iframe src="./src/_iframe.html"></iframe>
+  <iframe src="./src/_iframe.html"></iframe>
+  <iframe src="./src/_iframe.html"></iframe>
+  <script>
+    const originChannel = new BroadcastChannel('origin_bus')
+
+    document.getElementById('pushMaster').addEventListener('click', function() {
+      originChannel.postMessage('I click on the master button')
+    })
+  </script>
+</body>
+</html>
