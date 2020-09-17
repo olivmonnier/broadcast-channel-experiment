@@ -1,4 +1,7 @@
-const worker = new Worker('./worker.js')
+import workerInstance from './worker'
+
+const url = window.URL.createObjectURL(new Blob(['(' + workerInstance + ')();'], { type: 'text/javascript' }))
+const worker = new Worker(url)
 const id = Math.floor((Math.random() * 100) + 1)
 const processChannel = new BroadcastChannel(`process_bus:${id}`)
 
