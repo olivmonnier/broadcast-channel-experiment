@@ -11,10 +11,10 @@ export default function() {
     if (e.data.event === 'connect') {
       processId = e.data.id
       processChannel = new BroadcastChannel(`process_bus:${processId}`)
-    }
-    if (e.data.event === 'push') {
-      processChannel.postMessage({ message: 'I click on the iframe button' })
-      originChannel.postMessage(`The process id ${processId} received event`)
+      processChannel.onmessage = function(e) {
+        processChannel.postMessage({ message: 'I click on the iframe button' })
+        originChannel.postMessage(`The process id ${processId} received event`)
+      }
     }
   }
 }

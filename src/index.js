@@ -1,13 +1,8 @@
-import workerInstance from './worker'
+import ProcessBus from './ProcessBus'
 
-const url = window.URL.createObjectURL(new Blob(['(' + workerInstance + ')();'], { type: 'text/javascript' }))
-const worker = new Worker(url)
-const id = Math.floor((Math.random() * 100) + 1)
-const processChannel = new BroadcastChannel(`process_bus:${id}`)
-
-worker.postMessage({
-  event: 'connect',
-  id
+const bus = new ProcessBus()
+bus.on('message', function(e) {
+  showMessage(e.data.message)
 })
 
 function showMessage(message) {
@@ -16,14 +11,8 @@ function showMessage(message) {
   document.body.appendChild(div)
 }
 
-showMessage(`Process id: ${id}`)
+showMessage(`Process id: ${bus.id}`)
 
 document.getElementById('push').addEventListener('click', function() {
-  worker.postMessage({
-    event: 'push'
-  })
+  bus.emit('push')
 })
-
-processChannel.onmessage = function(e) {
-  showMessage(e.data.message)
-}
